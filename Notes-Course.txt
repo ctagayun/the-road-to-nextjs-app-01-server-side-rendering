@@ -1,0 +1,615 @@
+Links to Robins Book The Road To React  
+  Notes about Next.js:
+  - about props:
+     https://www.robinwieruch.de/react-pass-props-to-component/
+
+  
+
+  -  In Next.js every component is server component by default and
+     server components cannt use Hooks or assign event handlers. 
+     To make a component a client component and use event handlers
+     use a directive called: "use client"
+
+
+Some Basic React Stuff:
+   What is Jsx:
+      JSX and HTML differ in their integration and usage within 
+      web development. HTML is a standard markup language for
+      creating static web pages, while JSX is a syntax extension 
+      for JavaScript, mainly used with React, allowing HTML-like 
+      code within JavaScript.
+
+    What is Children in React:
+      Children is a special prop that allows us to pass in any type of element. 
+      It could be a number, a string, a boolean, an array of elements or even 
+      another componen
+
+   //using arrow functions without parameters
+             const Y = () =>{
+            };
+
+            
+            // arrow function with parameters
+            const hello = (val) => {
+               "Hello " + val;
+            } 
+
+          
+
+       3. Props 
+            //Note: all function components by convention receive "props" even if the function 
+            //doesn't have the param "props 
+            function Button(props) {
+	            return ( 
+                  <button onClick={props.onClickFunction}>
+                     + {props.increment}
+                 </button>
+              );
+            }
+
+            //sample of passing props to a component defined wit harrow function
+            const PlayNumber = props => (
+          	<button className="number" onClick={() => console.log('Num', props.number)}>
+               {props.number}
+            </button>
+          );
+
+   
+           //Define another component whose sole responsibility is to display the 
+           //value of the counter. It will not have it's own state.
+            //we are using parentheses after return because we are returning a 
+            //function call, remember, a React.createElement function call.
+
+            //since we are passing a prop to display in line 136, add a param here called "props"
+            //you can call it any name you want but usually it is named "props" thats the convention
+
+            //This "props" object will have a key-value pair for each attribute
+            function Display(props){
+                 return (  
+                   //Access the "message" attribute in the props
+                   <div>{props.message} </div>
+                 );
+            }
+        
+            //Simplify rendering by creating a new component called App
+            //within App return a DOM tree that contains <button/> amd <displa/> components
+
+            function App()
+            {
+              /*move the state hook here so that Button and Display components can access it
+              via prop */
+                const [counter, setCounter] = useState(42);
+                //add function to increment counter 
+                const incrementCounter = () => setCounter{counter +1};
+                return(
+                    <div>
+                      //props can also pass function.
+                      // 1. Pass a prop {incrementCounter} to Button component  
+                      // will pass "incrementCounter" function
+                      // 2. Pass another prop "increment={5} to be used by Button component
+                      <Button onclickFunction={incrementCounter} increment={5}  />
+                      //pass a prop and name it message
+                      <Display message{counter} />
+                    </div>
+                );
+            }
+
+
+link to Robin's Github Repo: https://github.com/rwieruch
+
+- Setup project from scratch
+      md the-road-to-react
+      cd 
+      npm init 
+
+      npm install react react-dom next (will show dependencies in pkg.json
+
+      change script to:"dev": "next dev"
+         so that we have a development server
+
+      . md app -->  touch app/layout.js touch app/page.js
+         - will contain all the routing (NO NEEE creating a separate 'PAGES" folder)
+ 
+ NEXT.JS - https://nextjs.org/
+   1. npx create-next-app@latest the-road-to-nextjs-app
+
+      - Apparently, the default setup for a Next.js installation no longer includes
+      the src/ folder. However, for this course, we'll be using the src/ folder, 
+      as shown in the video, since it's a better approach for managing larger 
+      applications down the road.
+
+      - go to https://nextjs.org/blog/next-15-rc
+
+      - copy and run: npm install next@rc react@rc react-dom@rc --force
+
+   2. Exploring the NextJS Starter file
+      - https://rwieruch.teachable.com/courses/the-road-to-next/lectures/54082445
+
+      - if anyone wants to replicate your project setup all they need to copy are;
+          package.json and package.lock.json and run npm install and they 
+          get exact "node_modules"
+
+   3. https://github.com/rwieruch
+
+
+   4. Deploy
+       - https://rwieruch.teachable.com/courses/the-road-to-next/lectures/54082443
+
+       - first push the-road-to-nextjs-app to git hub 
+       - second create an account in VERCEL
+         https://vercel.com/domingo-tagayuns-projects
+         USERID = CTAGAYUN2gmail.com
+
+         - deploy the-road-to-nextjs-app to vercel
+           first connect my github account to vercel.
+           add the-road-to-nextjs-app to vercel
+   5. Lint 
+        npm run lint
+        add to script in our package.json;
+           "lint-fix": "next lint --fix",
+        run this to fix any lint error
+
+   6. Pages: How to navigate to target pages
+       https://rwieruch.teachable.com/courses/the-road-to-next/lectures/53630910
+        - Note: the "App" folder is responsible or the ORIGIN  of routing.
+          The "App" since it is responsible for routing it is no 
+          displayed in the URL
+
+        Example:
+          app/page --> localhost:3000
+          app/tickets/page.tsx --> localhost:3000/tickets
+          app/tickets/create/page.tsx --> localhost:3000/tickets/create
+          app/about/page.tsx --> localhost:3000/about
+
+   7: Static and Dynamic Routes: 
+       - https://rwieruch.teachable.com/courses/the-road-to-next/lectures/53630910
+       - authors solution: https://github.com/rwieruch/the-road-to-next-app/tree/2024-11_files-based-routing_static-and-dynamic-routes
+
+       -  dynamic route 
+          /tickets
+            /[ticketId] you can insert any ticketId here
+               page.tsx
+
+          
+
+       - How would you implement a TicketEditPage which gets available at
+            /tickets/[ticketId]/edit
+
+         Answer: src/app/tickets/[ticketId]/edit/page.tsx 
+                 The code will be: 
+            /tickets
+              [ticketId]
+                 page.tsx
+                 /edit 
+                  page.tsx
+
+   8. Linked Components
+       - https://rwieruch.teachable.com/courses/the-road-to-next/lectures/53630962
+
+       - modify HomePage
+       - create data.ts file
+       - modify TicketPage to display list of tickets 
+            /tickets
+              /[ticketId]
+                /edit
+                  page.tsx
+            page.tsx (this is the TicketPage)
+
+        Quiz: Whats the difference clicking an <a> anchor tag with using Link Component 
+        in NextJS for navigation within a web application:
+
+        Answer: 
+          - clicking an <a> html anchor tag will cause full page reload while clicking 
+          a Link component in NextJS performs a CLIENT-SIDE navigation without a full 
+          page reload
+
+    9. Absolute Imports
+        - change TicketPages and TicketPage:
+            import { initialTickets } from "../../data"; to: "@/data"
+            import { initialTickets } from "../../../data"; to: "@/data"
+
+        Absolute Imports provides a consistent way of referencing modules 
+        regardless of their location in the directory structure
+
+    10. Path Constants
+          - https://rwieruch.teachable.com/courses/the-road-to-next/lectures/53630964
+
+          create path.ts under /src (not under /app)
+
+   11. Typed Routes (NEW)
+        - https://rwieruch.teachable.com/courses/the-road-to-next/lectures/57896994
+
+   12. Layout
+        - https://rwieruch.teachable.com/courses/the-road-to-next/lectures/53630965
+
+        - in this section we are going to learn NextLayout component
+
+        - the layout.tsx bubbles down to other pages
+
+        Quiz:
+          1. How would you add style for all pages related to the ticketId
+          feature, but not the top level HomePage
+             Answer: Add Layout.tsx to app/tickets/layout.tsx
+
+          2. What is the app/folder in Next.Js
+             Answer: The folder where all the file-based routing happens
+
+   13. Scripts
+       - https://rwieruch.teachable.com/courses/the-road-to-next/lectures/57749871
+
+       - we have to define our typescript file .tsx
+
+       - add to scripts in our package.json:
+          "type": "tsc --noEmit"
+
+         this will enable us to run in the command line to check our 
+         whole project for Typescript errors. Instead of relying to the VSCode to display our errors
+
+  
+   14. Const Assertions
+
+      - https://rwieruch.teachable.com/courses/the-road-to-next/lectures/57749872
+
+      - add the following code to TicketsPage to be used in 
+        indicating status of a ticket
+          const TICKET_ICONS = {
+              OPEN: "O",
+              IN_PROGRESS: ">",
+              DONE: "X", //We can later substitute an icon to "X"
+            }
+
+       - modify initialTickets: 
+          append "as const," to status field. 
+          Example: status: "DONE" as const
+
+    15. Tailwind CSS  
+         For CSS - see Tailwind: https://tailwindcss.com/width (spacing, sizing, etc)
+
+       - A utility-first CSS framework packed with classes like flex, pt-4, text-center and rotate-90 that can be composed to build any design, 
+         directly in your markup.
+
+       - contains predefined classes that you use in your web app
+
+       - It is still CSS and you use flex grid etc but just quicker to write and maintain. 
+       
+       - https://tailwindcss.com/ 
+
+    16. Conditional Styling
+       - https://rwieruch.teachable.com/courses/the-road-to-next/lectures/53956347
+
+       - first npm install clsx
+
+       - import clsx from "clsx"; in TicketsPage
+    
+    17. Animation with Tailwind
+
+       - https://rwieruch.teachable.com/courses/the-road-to-next/lectures/53956350
+
+       - add the following to to tailwind.config:
+             keyframes: {
+            "fade-from-top": {
+            from: { opacity: "0", transform: "translateY(-16px)" },
+             to: { opacity: "1", transform: "translateY(0)" },
+           },
+         },
+          animation: {
+          "fade-from-top": "fade-from-top 0.5s ease-out",
+          },
+
+       - reference the above animations to TicketsPage
+
+    18. SVGs
+         For CSS - see Tailwind: https://tailwindcss.com/width (spacing, sizing, etc)
+
+         - https://rwieruch.teachable.com/courses/the-road-to-next/lectures/53956369
+
+         - go to TicketsPage and add icons to used in 
+         - go to to SVG icons: https://heroicons.com/
+              - search for "check" and copy the Jsx 
+
+    =================================           
+    Section UI Library: 
+    =================================
+     For CSS - see Tailwind: https://tailwindcss.com/width (spacing, sizing, etc)
+    
+       19. UI Library - Setup
+
+        - shadcnui - most popular UI library 
+
+        -  go to https://ui.shadcn.com/ --> Docs --> Installation -> next.Js
+          --> npm --> npx shadcn@latest init -d
+
+        - after running shadcn new stuff were added to:
+            global.css 
+            tailwind.config.css (you might need to reiplemnet the animation we did earlier)
+
+        - whenever we want to use a component such as button we need to install it:
+          Go to Component ---> Button, Sidebar, etc
+
+        - When you install shadcn control it automatically creates a component in your
+          app. Just copy and paste it to your projects
+
+       - install button component:
+           - npx shadcn@latest add button
+           to check if install is a success
+           
+           - go to src/component/ui you should see: buttonn.tsx
+           component created for you.
+
+       - let us use this button component: src/app/layout. Import usage 
+         from the button documentation in shadcn: 
+         import { Button } from "@/components/ui/button"
+
+     20. Cards Component
+        https://rwieruch.teachable.com/courses/the-road-to-next/lectures/53956392
+
+
+        npx shadcn@latest add 
+        
+        - go tosrc/component/card.tsx
+
+        - go to src/app/tickets/page.tsx and import 
+          import  {
+            Card,
+            CardHeader,
+            CardFooter,
+            CardTitle,
+            CardDescription,
+            CardContent }
+        from  "@/components/ui/card";
+
+      21. Separator Componet:
+        - https://rwieruch.teachable.com/courses/the-road-to-next/lectures/53956393
+          npx shadcn@latest add separator
+
+      22. Icon Component
+        - go to https://lucide.dev/guide/packages/lucide-react
+          where you can just pick the icon you want
+        - no need to install Lucide because it is already installed.
+        - see package.json
+              "lucide-react": "^0.468.0",
+              see dependencies in package.json: 
+        - you can remove now our custom ICONS and search for whatever icon 
+          you use from lucide
+
+    
+      - next open up layout.jsx
+         - rename Home to "Ticket-Boundary"
+         - import { LucideKanban } from "lucide-react";
+
+     21. Theming
+       - https://rwieruch.teachable.com/courses/the-road-to-next/lectures/53956398
+
+       - open layout.tsx and TicketsPage
+       - go to shadcn -->Themes -->Default --> Customize (select yellow)\
+         --> copy code --> Theme Dialog Box pops up
+
+       - copy code from the Popup --> open global.css, delete the old Theme
+         and paste the new theme.
+
+       - run the app you should see the ticket button colored yellow
+
+    =================================
+    Section Components folder
+    =================================
+      For CSS - see Tailwind: https://tailwindcss.com/width (spacing, sizing, etc)
+      1. Heading
+          - https://rwieruch.teachable.com/courses/the-road-to-next/lectures/53956399
+          - create a reusable heading component in src/app/component
+          - cut heading in app/tickets/TicketsPage and paste it in the reusable 
+            heading.tsx component
+
+      2. Header
+          - https://rwieruch.teachable.com/courses/the-road-to-next/lectures/53956401
+
+          - in this lesson we will create a Header component (not reusable) but 
+          it will encapsulate all navigation stuff. 
+          - create a Header component in app/component/header.tsx
+          - go to ticket layout.tsx and transplant the <nav/> to header.tsx
+
+      3. Place Holder
+          - https://rwieruch.teachable.com/courses/the-road-to-next/lectures/53956403 
+
+          - create a reusable component called PlaceHolder
+
+          - go to [ticketId]/TicketPage and replace ___ with PlaceHolder component
+  
+          - Quiz: 
+            1. What's the difference between ReactNode and ReactElement?
+               Answer: ReactNode can represent anything that can be rendered in React, while ReactElement is a specific object that describes what to render.
+    =================================
+    Section Feature folder
+    ================================
+      For CSS - see Tailwind: https://tailwindcss.com/width (spacing, sizing, etc)
+
+      1. Intro/Extract
+          - https://rwieruch.teachable.com/courses/the-road-to-next/lectures/54204509
+          - create src/features/components/ticket-item.tsx folder and 11_files
+           - go to src/app/tickets/[ticketId] TicketPages and extract logic to display 
+          tickets into resusable component called Ticketitem.tsx
+           
+      2. Modify Refactor Ticketitem.tsx component because there will be more functions like editing 
+      and deleting tickets. 
+        - https://rwieruch.teachable.com/courses/the-road-to-next/lectures/54204594
+
+        - move the "View" link
+
+        - add "Update, Delete.." tasks to th right of the ticket
+
+        - open TicketItem.tsx
+
+      3. Reuse
+          
+          - https://rwieruch.teachable.com/courses/the-road-to-next/lectures/54204596
+         
+          - in this lesson we will reuse the resusable TicketItem component
+
+          - navigate to app/[ticket]/individual TicketPage folder
+            (see notes about the modifications)
+
+          - let's add more styling to "TicketItem" let's import clsx
+    =================================
+    Section Project Structure
+    =================================
+      For CSS - see Tailwind: https://tailwindcss.com/width (spacing, sizing, etc)
+
+      1.
+
+      2.
+
+      3.
+
+    =================================
+    Section Light and Dark Mode
+    =================================
+      https://rwieruch.teachable.com/courses/the-road-to-next/lectures/53956406
+      For CSS - see Tailwind: https://tailwindcss.com/width (spacing, sizing, etc)
+      For themes: https://www.npmjs.com/package/next-themes
+
+      1. In this section we will implement "Dark Mode" in our application
+      
+
+      2. Create a toggle button to switch between dark and light Mode
+          - npm install next-themes --force
+         
+          - first we want to create a "provider" component which will provide a 
+          theme to the whole application based on the user selection:
+             - go to src/component create theme folder  
+  
+          - next we will implement ThemeSwitcher component. ThemeSwitcher 
+          is a hook. In Next.js every component is server component by default and
+          server components cannt use Hooks or assign event handlers for 
+          buttons.
+
+          - next use the Switcher in src/app/header
+
+    =================================
+    Section Server vs Client Components
+    =================================
+      https://rwieruch.teachable.com/courses/the-road-to-next/lectures/54247908
+      For CSS - see Tailwind: https://tailwindcss.com/width (spacing, sizing, etc)
+      
+      1. Data Fetching in Client Components 
+          - https://rwieruch.teachable.com/courses/the-road-to-next/lectures/53956408
+
+          - create queries folder in src/features/ticket/get-ticket.tsx
+
+          
+      2. Characteristics of Client Component
+
+      3. Client Server Boundary
+         - https://rwieruch.teachable.com/courses/the-road-to-next/lectures/53956413
+         - all components in next.js are server components by default
+         - if the parent of TicketItem like TicketPages has "useClient" TicketItem becomes client component
+         - if the parent of TicketItem like TicketPage has no "useClient" TicketItem becomes server component
+         - if TicketItem is using "useClient", regardless of its parent it becomes a client component
+           and all of its descendants as well.
+
+      4. Client Server Composition
+         - https://rwieruch.teachable.com/courses/the-road-to-next/lectures/54249828
+
+         - bring up ThemeProvider which is used in src/app/layout.tsx.
+                
+         -  Component Composition Pattern. It is a design pattern
+            that allows us to have Server Components with Client 
+            components as ancestor. See src/app/layout.tsx
+
+         - now if we add "useClient" to ThemeProvider since it is used at 
+           the very top of layout.tsx and since we are using a component pattern
+           anything in between as children (we are using composition pattern here)
+           are no affected by "useClient" directive. Everything can stay as 
+           server component.
+
+    =================================
+    Section Server Components
+    =================================
+      History of Server Components: https://rwieruch.teachable.com/courses/the-road-to-next/lectures/54250104
+      For CSS - see Tailwind: https://tailwindcss.com/width (spacing, sizing, etc)
+   
+      1. Data Fetching in Server Components:
+          - https://rwieruch.teachable.com/courses/the-road-to-next/lectures/54250104
+
+          - modify TicketsPage to make it server component (remove the useClient)
+          you will see the console log "Where am i exeuting? ThemeProvider" displayed
+          in the terminal (not in the browser - do F12 (or right click page --> inspect) to 
+          to go to Chrome Dev tools you will the log is not there)
+
+
+      2. SSR vs Server Components:
+          - https://rwieruch.teachable.com/courses/the-road-to-next/lectures/54251619
+
+          - server components vs client components:
+             - server component executes code in the server such a database access and
+               it renders in the server as well but re-renders and in the client (browser). 
+               Server component only  executes the React code, and outputs the HTML to the client and the 
+               browser only receives the HTML not the React code and JavaScript
+               code.
+
+               While client components and server components are both server-side rendered,
+               the client components are executed on the client again with the 
+               React Code and JavaScript code.
+
+               Therefore the advantage of Server components is they reduce the amount 
+               of code needed on the client because they only return HTML (not the code to generate
+               the HTML)
+           
+          - client components:
+             - server components  are still
+             server-side rendered but re-rendered or hydrate on the client again 
+             to make all the event handling and so on happens. 
+
+      3. Server-Side Rendering
+          - https://rwieruch.teachable.com/courses/the-road-to-next/lectures/58022419
+
+          - open TicketPage and implement server component rendering 
+              - create features/queries/get-ticket.tsx
+
+              - now implement get-ticket.tsx in TicketPage
+              
+    =================================
+    Section Fallback Routes
+    =================================
+      For CSS - see Tailwind: https://tailwindcss.com/width (spacing, sizing, etc)
+      1.
+
+      2.
+
+    =================================
+    Section Fallback Routes
+    =================================
+      For CSS - see Tailwind: https://tailwindcss.com/width (spacing, sizing, etc)
+      1.
+
+      2.
+
+    =================================
+    Section Fallback Routes
+    =================================
+      For CSS - see Tailwind: https://tailwindcss.com/width (spacing, sizing, etc)
+      1.
+
+      2.
+
+    =================================
+    Section Fallback Routes
+    =================================
+      For CSS - see Tailwind: https://tailwindcss.com/width (spacing, sizing, etc)
+      1.
+
+      2.
+
+    =================================
+    Section Fallback Routes
+    =================================
+      For CSS - see Tailwind: https://tailwindcss.com/width (spacing, sizing, etc)
+      1.
+
+      2.
+
+    =================================
+    Section Fallback Routes
+    =================================
+      For CSS - see Tailwind: https://tailwindcss.com/width (spacing, sizing, etc)
+      1.
+
+      2.
